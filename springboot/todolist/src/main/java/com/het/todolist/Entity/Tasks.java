@@ -1,6 +1,8 @@
 package com.het.todolist.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -16,22 +18,35 @@ public class Tasks {
     @Id
     @GeneratedValue
     private Integer id;
+//    @JsonProperty("task_name")
     @Size(min = 1 , message = "Task cannot be blank")
     private String tasks;
     @FutureOrPresent
     private LocalDate date;
     @Column(columnDefinition = "boolean default false")
     private boolean status;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     public Tasks(){
 
     }
 
-    public Tasks(Integer id, String tasks, LocalDate date, boolean status) {
+    public Tasks(Integer id, String tasks, LocalDate date, boolean status, User user) {
         this.id = id;
         this.tasks = tasks;
         this.date = date;
         this.status = status;
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getId() {
